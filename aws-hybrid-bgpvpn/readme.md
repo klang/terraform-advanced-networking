@@ -13,6 +13,23 @@ This will activate the [one click deployment of stack ADVANCEDVPNDEMO](https://c
 
 ## stage 1
 
+### configuration files
+
+Terraform will produce all the configuration files needed to complete the rest of the demo. Finishing the configuration by hand is part of the demo and I currently see no point in automating THAT part.
+
+    connection1bgpconfig.txt
+    connection1config.txt
+    connection1ipsecconf.txt
+    connection1ipsecsecrets.txt
+    connection1ipsecvtish.txt
+
+    connection2bgpconfig.txt
+    connection2config.txt
+    connection2ipsecconf.txt
+    connection2ipsecsecrets.txt
+    connection2ipsecvtish.txt
+
+
 ### confirm no connectivity
 
 Something like this should work, but it doesn't on my machine .. Such a shame because some of the configurations in would be so much easier.
@@ -38,9 +55,6 @@ Something like this should work, but it doesn't on my machine .. Such a shame be
         User                   ubuntu
         IdentityFile           ~/.ssh/systime.pem
         ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
-
-
-
 
 ## stage 3
 
