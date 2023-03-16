@@ -30,32 +30,6 @@ Terraform will produce all the configuration files needed to complete the rest o
     connection2ipsecvtish.txt
 
 
-### confirm no connectivity
-
-Something like this should work, but it doesn't on my machine .. Such a shame because some of the configurations in would be so much easier.
-
-
-    server2=$(aws ec2 describe-instances --filters "Name=tag-value,Values=ONPREM-SERVER2" --region us-east-1 --query "Reservations[].Instances[] | [? NetworkInterfaces ].{InstanceId:InstanceId}" --output text)
-
-    aws ssm start-session --target=$server2 --document-name AWS-StartSSHSession --parameters 'portNumber=22'
-
-
-    router1=$(aws ec2 describe-instances --filters "Name=tag-value,Values=ONPREM-ROUTER1" --region us-east-1 --query "Reservations[].Instances[] | [? NetworkInterfaces ].{InstanceId:InstanceId}" --output text)
-
-    aws ssm start-session --target=$router1 --document-name AWS-StartSSHSession --parameters 'portNumber=22'
-
-# .ssh/config
-
-    # SSH over Session Manager
-    # brew install --cask session-manager-plugin
-    #host i-* mi-*
-    #    ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
-
-    host i-* mi-*
-        User                   ubuntu
-        IdentityFile           ~/.ssh/systime.pem
-        ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
-
 ## stage 3
 
     sudo bash
