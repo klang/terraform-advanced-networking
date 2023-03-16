@@ -15,11 +15,17 @@ This will activate the [one click deployment of stack ADVANCEDVPNDEMO](https://c
 
 ### confirm no connectivity
 
-    aws ec2 describe-instances --filters "Name=tag-value,Values=ONPREM-SERVER2" --region us-east-1 --query "Reservations[].Instances[] | [? NetworkInterfaces ].{InstanceId:InstanceId}" --output text
+Something like this should work, but it doesn't on my machine .. Such a shame because some of the configurations in would be so much easier.
+
 
     server2=$(aws ec2 describe-instances --filters "Name=tag-value,Values=ONPREM-SERVER2" --region us-east-1 --query "Reservations[].Instances[] | [? NetworkInterfaces ].{InstanceId:InstanceId}" --output text)
 
-aws ssm start-session --target=$server2 --document-name AWS-StartSSHSession --parameters 'portNumber=22'
+    aws ssm start-session --target=$server2 --document-name AWS-StartSSHSession --parameters 'portNumber=22'
+
+
+    router1=$(aws ec2 describe-instances --filters "Name=tag-value,Values=ONPREM-ROUTER1" --region us-east-1 --query "Reservations[].Instances[] | [? NetworkInterfaces ].{InstanceId:InstanceId}" --output text)
+
+    aws ssm start-session --target=$router1 --document-name AWS-StartSSHSession --parameters 'portNumber=22'
 
 # .ssh/config
 
@@ -34,14 +40,6 @@ aws ssm start-session --target=$server2 --document-name AWS-StartSSHSession --pa
         ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
 
 
-
-    aws ec2 describe-instances --filters "Name=tag-value,Values=ONPREM-ROUTER1" --region us-east-1 --query "Reservations[].Instances[] | [? NetworkInterfaces ].{InstanceId:InstanceId}" --output text
-
-
-    router1=$(aws ec2 describe-instances --filters "Name=tag-value,Values=ONPREM-ROUTER1" --region us-east-1 --query "Reservations[].Instances[] | [? NetworkInterfaces ].{InstanceId:InstanceId}" --output text)
-
-
-    aws ssm start-session --target=$router1 --document-name AWS-StartSSHSession --parameters 'portNumber=22'
 
 
 ## stage 3
@@ -61,6 +59,27 @@ aws ssm start-session --target=$server2 --document-name AWS-StartSSHSession --pa
     ifconfig
 
 ifconfig should have vti1 and vti2 onthe list of interfaces
+
+In the aws console, the tunnel status will still be "Down" as no BGP has been configured yet, but the Details will say "IPSEC IS UP".
+
+## stage 4 (A and B)
+
+Connect to `ONPREM-ROUTER1` and execute the following (do the same on `ONPREM-ROUTER2`) this will take 15-20 inutes
+
+    sudo bash
+    cd /home/ubuntu/demo_assets
+    chmod +x ffrouting-install.sh
+    ./ffrouting-install.sh
+
+## stage 4 (C and D)
+
+
+Paste the content of `connection1bgpconfig.txt` into the connection to `ONPREM-ROUTER1` and type `sudo reboot`
+Paste the content of `connection2bgpconfig.txt` into the connection to `ONPREM-ROUTER2` and type `sudo reboot`
+
+The routes advertised on the Transit Gateway will now contain the onprem servers and the site-2-site connection will show that both tunnels are up. Executing `route` on the onprem routers will show that they now know the aws servers.
+
+Likewise, it's possible to `ping` any private ip address from any of the servers. The Transit Gateway uses the default route table and configure a "full mesh" in this example
 
 # cleanup
 

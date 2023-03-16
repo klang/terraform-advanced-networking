@@ -1,0 +1,21 @@
+# SHARED VALUES
+
+ROUTER_PRIVATE_IP                   = ${onprem_inside_address} 	
+ONPREM BGP ASN                      = 65016  
+AWS BGP ASN                         = 64512  
+
+# CONNECTION - AWS => ON PREM ROUTER
+
+TUNNEL1_PresharedKey          =  ${tunnel1_preshared_key}
+TUNNEL1_ONPREM_OUTSIDE_IP     =  ${onprem_outside_address}
+TUNNEL1_AWS_OUTSIDE_IP        =  ${tunnel1_address}
+TUNNEL1_ONPREM_INSIDE_IP      =  ${tunnel1_cgw_inside_address}
+TUNNEL1_AWS_INSIDE_IP         =  ${tunnel1_vgw_inside_address}
+TUNNEL1_AWS_BGP_IP            =  ${tunnel1_bgp_address}
+
+TUNNEL2_PresharedKey          =  ${tunnel2_preshared_key}
+TUNNEL2_ONPREM_OUTSIDE_IP     =  ${onprem_outside_address}
+TUNNEL2_AWS_OUTSIDE_IP        =  ${tunnel2_address}
+TUNNEL2_ONPREM_INSIDE_IP      =  ${tunnel2_cgw_inside_address}
+TUNNEL2_AWS_INSIDE_IP         =  ${tunnel2_vgw_inside_address}
+TUNNEL2_AWS_BGP_IP            =  ${tunnel2_bgp_address}
