@@ -1,6 +1,6 @@
 # Advanced Demo - Site-To-Site VPN
 
-[from Adrian Cantrill's course material](https://github.com/acantril/learn-cantrill-io-labs/tree/master/aws-hybrid-bgpvpn)
+[from Adrian Cantrill's course material](https://github.com/acantril/learn-cantrill-io-labs/tree/master/aws-hybrid-bgpvpn) .. [just released on youtube](https://www.youtube.com/watch?v=0dVVLKp4I18&t=1s)
 
 # setup
 
