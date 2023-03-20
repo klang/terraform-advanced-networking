@@ -10,3 +10,9 @@ The examples from the AWS Documentation on Transit Gateway are here implemented 
 * [Peering](./peering/)
 * [Centralized outbound routing](./centralized-outbound-router/)
 * [Appliance VPC](./appliance-vpc/)
+
+# Additional examles
+
+* [Hybrid BGP VPN](./aws-hybrid-bgpvpn/)
+* [Gateway Loadbalancers](./gateway-loadbalancers/)
+* [Cross-Account private APIs](./cross-account-private-api/)
