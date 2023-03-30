@@ -1,0 +1,14 @@
+vtysh
+conf t
+frr defaults traditional
+router bgp 65016
+neighbor ${tunnel1_bgp_address} remote-as 64512
+neighbor ${tunnel2_bgp_address} remote-as 64512
+no bgp ebgp-requires-policy
+address-family ipv4 unicast
+redistribute connected
+exit-address-family
+exit
+exit
+wr
+exit
